@@ -1,0 +1,189 @@
+<!doctype html>
+<html> 
+<head>
+<meta charset="utf-8">
+<title>表单验证</title>
+	<style type="text/css">
+		span{
+			color: red;
+			font-size: 12;
+		}
+	</style>
+</head>
+
+<body>
+	<script type="text/javascript">
+	 /*
+	 1 用户名不能为空
+	 2 用户名必须在6到14位之间
+	 3 用户名只能有数字和字母组成，不能有其他符号（正则表达式）
+	 4 密码和确认密码一致，邮箱地址合法
+	 5 统一失去焦点验证
+	 6 错误提示信息统一在span标签中提示，并且要求字体12号
+	 7 文本框再次获得焦点后，清空错误提示信息，如果文本框中的数据不合法要求清空文本框的value
+	 8 最终表单中所有项均合法方可提交
+	 
+	 */
+	  window.onload = function(){
+		  
+		  // 获取usename的span标签
+		  var useeEltspan = document.getElementById("userError");
+		  
+		  // 给用户文本框绑定blur事件
+		  var userElt = document.getElementById("usename");
+		  userElt.onblur = function(){
+			  // 获取用户名
+			  var usename = userElt.value;
+			  // 去除空白
+			  usename = usename.trim();
+			  // 判断用户名是否为空
+			 /* if(usename){
+				  // 代表usename不是空字符串
+				  alert("usename = "+usename)
+			  }else{
+				  // 代表usename是空字符串
+				  alert("用户名不能为空")
+			  } */
+			  // if(usename.length==0){}
+			  if(usename==""){
+				  // 用户名为空
+				  useeEltspan.innerText="用户名不能为空";
+				  
+			  }else{
+				  // 用户名不是为空
+				  // 继续判断长度6到14
+				  if(usename.length < 6 || usename.length > 14){
+					  // 用户长度非法
+					  useeEltspan.innerText="用户名长度必须在6到14之间";
+			  }else{
+				  // 用户名长度合法
+				  // 判断是含有特殊符号
+				  var regExp = /^[A-Za-z0-9]+$/;
+				  var ok = regExp.test(usename);
+				  if(ok){
+					  // 用户名合法
+				  }else{
+					  // 用户名不合法，有特殊符号
+					  useeEltspan.innerText="用户名只能有字母和数字组成";
+				  }
+			  }
+		  }
+		  
+		  
+		  
+		  // 给文本框获取焦点事件
+		  userElt.onfocus = function(){
+			  
+			  // 清空非法的value
+			  if(useeEltspan.innerText != ""){
+				  useeEltspan.value = "";
+			  }
+			  
+			  // 清空span
+			  useeEltspan.innerText = "";
+
+		  }
+	  }	
+	  // 获取密码错误的span标签
+	  var usepassspanElt = document.getElementById("pwaError");
+	  
+	  
+	  // 获取确认密码框事件
+	  var userpass1Elt = document.getElementById("usepass1");
+	  // 绑定blur事件
+	  userpass1Elt.onblur = function(){
+		  // 获取密码和确认密码
+		  var usepassElt = document.getElementById("usepass");
+		  var usepass = usepassElt.value;
+		  var usepass1 = userpass1Elt.value;
+		  if(usepass != usepass1){
+			  // 密码不一致
+			  usepassspanElt.innerText = "密码不一致";
+		  }else{
+			  // 密码一致
+		  }
+	  }
+	  
+	  // 绑定focus事件
+	  userpass1Elt.onfocus = function(){
+		  if(usepassspanElt.innerText != ""){
+			  userpass1Elt.value = "";
+		  }
+		  usepassspanElt.innerText = "";
+	  }
+	  
+	  // 给email绑定blur事件
+	  var emailElt = document.getElementById("email");
+	  // 获取email的span
+	  var emailspanElt = document.getElementById("emailError");
+	  // 给email绑定blur事件
+	  emailElt.onblur = function(){
+		  // 获取email
+		  var email = emailElt.value;
+		  // 获取email正则
+		  var emailRegExp = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
+	      var ok = emailRegExp.test(email);
+		  if(ok){
+			  // 代表合法
+		  }else{
+			  // 不合法
+			  emailspanElt.innerText = "邮箱不合法";
+		  }
+	  }
+	  
+	  // 给邮箱绑定onfocus
+	  emailElt.onfocus = function(){
+		  if(emailspanElt.innerText != ""){
+			  emailElt.value ="";
+		  }
+		  emailspanElt.innerText = "";
+	  }
+	  
+	  // 给提交按钮绑定鼠标点击事件
+	  var subErlt = document.getElementById("submite");
+	  subErlt.onclick = function(){
+		  // 触发usename的blur usepass1的blur email的blur
+		  userElt.focus();
+		  userElt.blur();
+		  
+		  userpass1Elt.focus();
+		  userpass1Elt.blur();
+		  
+		  emailElt.focus();
+		  emailElt.blur();
+		  
+		  // 当所有表单都是合法的时候，提交表单
+		  if(useeEltspan.innerText == "" && usepassspanElt.innerText == ""&& emailspanElt.innerText == ""){
+			  // 提交表单
+			  var useForm = document.getElementById("useForm");
+			  // 也可以这样
+			  useForm.action=" http://127.0.0.1:8080/HTML/shy1.html";
+			  // 提交表单
+			  useForm.submit();
+		  }
+			  
+	  }
+	}
+	</script>
+	<!-- <!——这个表单提交应该使用post 这里为了检测，所有使用get ——> -->
+	<!-- <form id="useForm" action=" http://127.0.0.1:8080/HTML/shy1.html" method="get">
+		 -->
+	<form id="useForm"  method="get">
+	
+	用户名<input type="text" name="usename" id="usename"/>
+		<span id="userError"></span> <br>
+		
+	密码<input type="text" name="usepass"  id="usepass"/><br>
+	
+	确认密码<input type="text" name="usepass1" id="usepass1"/>
+		<span id="pwaError"></span><br>
+		
+	邮箱<input type="text" name="email" id="email"/>
+		<span id="emailError"></span><br>
+		
+		<input type="submit" value="注册" id="submite"/>
+		
+		<input type="reset"  value="重置"/>
+	</form>
+</body>
+</html>

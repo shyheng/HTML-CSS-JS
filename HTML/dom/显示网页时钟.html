@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>显示网页时钟</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+	// 获取系统当前时间
+	var now = new Date();
+	// 输出
+	// document.write(now);
+	// 格式化
+	now = now.toLocaleString();
+	document.write(now);
+	document.write("<br>");
+	// 自定义格式化
+	var t = new Date();
+	var year = t.getFullYear()//返回年信息。
+	var month = t.getMonth();//月份是0-11
+	// var day = t.getDay();//获取的一周的第几天0-6
+	var day = t.getDate();//获取日期的信息
+	document.write(year+"年"+(month+1)+"月"+day+"日");
+	
+	document.write("<br>");
+	
+	// 重点怎么获取毫秒数，1970年1月1日
+	// var time = t.getTime();
+	// document.write(time);//一般会使用毫秒数当做时间截（timestamp）
+	
+	document.write(new Date().getTime());
+	</script>
+	
+	<script type="text/javascript">
+		function displayTime(){
+			var time = new Date();
+			var srttime = time.toLocaleString();
+			document.getElementById("timeDiv").innerHTML = srttime;
+		}
+		
+		
+		// 每隔1秒调用displayTime()函数
+		function star(){
+			// 从这行代码执行开始，则会不间断，每隔1000毫秒调用一次
+			v = window.setInterval("displayTime()",1000);
+		}
+		
+		
+		function stap(){
+			window.clearInterval(v);
+		}
+	</script>
+	<br>
+	<input type="button" value="显示系统时间" onclick="star();"/>
+	<input type="button" value="系统时间停止" onclick="stap();"/>
+	<div id="timeDiv"></div>
+</body>
+</html>
